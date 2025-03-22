@@ -13,11 +13,11 @@
     },
     {
         "text": "Shift the small box from table 3 to table 7 by 5:15 PM.",
-        "entities": [[10, 19, "OBJECT"], [25, 33, "LOCATION"], [36, 44, "LOCATION"], [47, 54, "TIME"]]
+        "entities": [[10, 19, "OBJECT"], [25, 32, "LOCATION"], [36, 43, "LOCATION"], [47, 54, "TIME"]]
     },
     {
         "text": "Retrieve the green box from table X and set it up on table Y at noon.",
-        "entities": [[13, 23, "OBJECT"], [28, 36, "LOCATION"], [53, 61, "LOCATION"], [64, 68, "TIME"]]
+        "entities": [[13, 22, "OBJECT"], [28, 35, "LOCATION"], [53, 60, "LOCATION"], [64, 68, "TIME"]]
     },
     {
         "text": "Deliver the big box to table 12 by 3 PM.",
@@ -33,7 +33,7 @@
     },
     {
         "text": "Take the cardboard box to table D by 11 AM.",
-        "entities": [[9, 22, "OBJECT"], [26, 33, "LOCATION"], [37, 44, "TIME"]]
+        "entities": [[9, 22, "OBJECT"], [26, 33, "LOCATION"], [37, 42, "TIME"]]
     },
     {
         "text": "Bring the heavy box from table 6 and place it on table 9 at 7 PM.",
@@ -53,7 +53,7 @@
     },
     {
         "text": "Retrieve the black package from section 7 and drop it at section 12 at 09:30 AM.",
-        "entities": [[13, 26, "OBJECT"], [32, 41, "LOCATION"], [57, 67, "LOCATION"], [70, 80, "TIME"]]
+        "entities": [[13, 26, "OBJECT"], [32, 41, "LOCATION"], [57, 67, "LOCATION"], [71, 79, "TIME"]]
     },
     {
         "text": "Deliver the large parcel to counter B before 6 PM.",
@@ -69,15 +69,15 @@
     },
     {
         "text": "Move the white package from locker 11 and store it in locker 15 by 12 PM.",
-        "entities": [[9, 22, "OBJECT"], [28, 37, "LOCATION"], [54, 63, "LOCATION"], [66, 72, "TIME"]]
+        "entities": [[9, 22, "OBJECT"], [28, 37, "LOCATION"], [54, 63, "LOCATION"], [67, 72, "TIME"]]
     },
     {
         "text": "Take the wooden chest to zone A before 8:30 AM.",
-        "entities": [[9, 21, "OBJECT"], [25, 31, "LOCATION"], [39, 48, "TIME"]]
+        "entities": [[9, 21, "OBJECT"], [25, 31, "LOCATION"], [39, 46, "TIME"]]
     },
     {
         "text": "Send the lightweight box to panel 2 at 11:45 AM.",
-        "entities": [[9, 24, "OBJECT"], [28, 35, "LOCATION"], [39, 48, "TIME"]]
+        "entities": [[9, 24, "OBJECT"], [28, 35, "LOCATION"], [39, 47, "TIME"]]
     },
     {
         "text": "Retrieve the gold box from section F and move it to table 3 at 2 PM.",
@@ -85,7 +85,7 @@
     },
     {
         "text": "Transfer the fragile box from shelf 9 and place it on counter 7 at 3:30 PM.",
-        "entities": [[13, 24, "OBJECT"], [30, 37, "LOCATION"], [54, 64, "LOCATION"], [67, 75, "TIME"]]
+        "entities": [[13, 24, "OBJECT"], [30, 37, "LOCATION"], [54, 63, "LOCATION"], [67, 74, "TIME"]]
     },
     {
         "text": "Bring the steel package to cabinet 4 before midnight.",
@@ -109,6 +109,6 @@
     },
     {
         "text": "Lift the plastic container from bay 5 and place it in bay 9 by 4 PM.",
-        "entities": [[9, 26, "OBJECT"], [32, 37, "LOCATION"], [54, 59, "LOCATION"], [63, 68, "TIME"]]
+        "entities": [[9, 26, "OBJECT"], [32, 37, "LOCATION"], [54, 59, "LOCATION"], [63, 67, "TIME"]]
     }
 ]

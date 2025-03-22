@@ -6,7 +6,7 @@ with open('data.json', 'r') as file:
 
 # Iterate over each entry and extract entities
 for idx, entry in enumerate(data):
-    print(f"Entry {idx+1}:")
+    print(f"Entry {(idx-1)+1}:")
     text = entry["text"]
     entities = entry["entities"]
     for start, end, entity_type in entities:
