@@ -1,6 +1,90 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
+
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color: #d2ffb8;
+  overflow: hidden;
+}
+
+header {
+  padding: 1%;
+}
+
+
+main {
+  filter: url('#flt_tag')
+}
+
+.chat-container {
+  width: 320px;
+  background-color: #ffffff;
+  border-radius: 20px;
+  padding: 50px 15px 15px 15px;
+  margin: 50px auto;
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+
+  height: 70vh;
+  overflow-y: auto;
+  clip-path: polygon(50% 0, 100% 0, 100% 100%, 0 100%, 0 10%, 50% 10%);
+}
+  
+.messages {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-grow: 1;
+}
+  
+.message {
+  padding: 8px 12px;
+  border-radius: 20px;
+  max-width: 80%;
+  word-wrap: break-word;
+}
+  
+.message.bot {
+  background-color: rgba(192, 192, 192, 0.253);
+  align-self: flex-start;
+  border: #ffffff 3px solid;
+}
+  
+.message.user {
+  background-color: black;
+  color: white;
+  align-self: flex-end;
+}
+  
+.input-area {
+  display: flex;
+  gap: 5px;
+  margin-top: auto;
+}
+  
+.input-area input {
+  flex: 1;
+  padding: 8px;
+  border-radius: 20px;
+  border: none;
+}
+  
+.input-area button {
+  padding: 8px 12px;
+  border-radius: 20px;
+  border: none;
+  background-color: black;
+  color: white;
+  cursor: pointer;
+}
+  
