@@ -5,48 +5,142 @@
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
-body {
+html, body, #root {
+  height: 100%;
   margin: 0;
   padding: 0;
-  height: 100vh;
-  width: 100vw;
-  background-color: #d2ffb8;
+}
+
+body {
+  background-color: #82ffcb;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
 }
 
 header {
-  padding: 1%;
+  padding: 2%;
+  height: 10vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-
 main {
-  filter: url('#roundedCorners')
+  flex-grow: 1;  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #00000000;
+  min-height: calc(100vh - 10vh);
+  flex-direction: row;
+}
+
+.action {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 90%;
+  background-color: #f8bdbd00;
+  max-width: 320px;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  min-height: 500px;
+  max-height: 600px;
+  margin-inline: 5%;
+}
+
+.action-header{
+  background: #1f1f1fd8;
+  width: 44%;
+  height: 8.75%;
+  border-radius: 8px;
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+.chat {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 90%;
+  background-color: #f8bdbd00;
+  max-width: 320px;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  min-height: 500px;
+  max-height: 600px;
+  margin-inline: 5%;
+}
+
+.chat-header{
+  background: #1f1f1fd8;
+  width: 44%;
+  height: 8.75%;
+  border-radius: 8px;
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+.chat-body{
+  filter: url('#roundedCorners');
+  padding: 0;
+  margin: 0;
+  position: relative;
+  top: 0px;
 }
 
 .chat-container {
   width: 320px;
   background-color: #ffffff;
-  border-radius: 20px;
+  border-radius: 10px;
   padding: 50px 15px 15px 15px;
-  margin: 50px auto;
   font-family: Arial, sans-serif;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 10px;
   position: relative;
-
-  height: 70vh;
-  overflow-y: auto;
-  clip-path: polygon(50% 0, 100% 0, 100% 100%, 0 100%, 0 10%, 50% 10%);
-  -webkit-clip-path: polygon(50% 0, 100% 0, 100% 100%, 0 100%, 0 10%, 50% 10%);
-  filter: url(#roundedCorners);
+  height: 100%;
+  min-height: 500px;
+  overflow-y: hidden;
+  clip-path: polygon(46% 0, 100% 0, 100% 100%, 0 100%, 0 10%, 46% 10%);
+  -webkit-clip-path: polygon(46% 0, 100% 0, 100% 100%, 0 100%, 0 10%, 46% 10%);
 }
   
 .messages {
+  height: 78%;
   display: flex;
   flex-direction: column;
   gap: 8px;
-  flex-grow: 1;
+  flex: 1;
+  position: absolute;
+  bottom: 11%;
+  overflow-y: scroll;
+  width: 300px;
+  /* background-color: aqua; */
 }
   
 .message {
@@ -54,31 +148,50 @@ main {
   border-radius: 20px;
   max-width: 80%;
   word-wrap: break-word;
+  bottom: 90px;
+  text-wrap: normal;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
 }
   
 .message.bot {
   background-color: rgba(192, 192, 192, 0.253);
   align-self: flex-start;
-  border: #ffffff 3px solid;
+  /* border: #ffffff 3px solid; */
+  width: fit-content;
 }
   
 .message.user {
   background-color: black;
   color: white;
   align-self: flex-end;
+  width: fit-content;
 }
   
 .input-area {
   display: flex;
   gap: 5px;
   margin-top: auto;
+  position: sticky;
+  bottom: 0;
+  background-color: #ffffff;
 }
   
 .input-area input {
   flex: 1;
   padding: 8px;
   border-radius: 20px;
-  border: none;
+  border: 2px solid #00000000;
+  background: #000000;
+  padding-inline: 5%;
+  backdrop-filter: blur(10px);
+  color: #ffffff;
+}
+
+.input-area input:focus {
+  /* background-color: #a80000; */
+  /* border: none; */
+  outline: none;
 }
   
 .input-area button {
