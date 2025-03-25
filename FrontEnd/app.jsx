@@ -23,26 +23,31 @@ function App() {
   };
 
   const [actions, setActions] = React.useState([
-    { acts: 'Ketchup box found in box A. Confirm to move it to box C'},
-    { acts: 'Move the ketchup box from box A to Box C'},
+    { acts: 'Moving Black Peppers from box A to Box C'},
+    { acts: 'Moving Ketchup box to table C'},
+    { acts: 'Moving Black Peppers from box A to Box C'},
+    { acts: 'Moving Ketchup box to table C'},
+    { acts: 'Moving Black Peppers from box A to Box C'},
+    { acts: 'Moving Ketchup box to table C'},
   ]);
 
-  // const [input, setInput] = React.useState('');
+  const [act, setAct] = React.useState('');
 
-  // // 👇 Create a ref to scroll to the bottom
-  // const messagesEndRef = React.useRef(null);
+  // 👇 Create a ref to scroll to the bottom
+  const actionsEndRef = React.useRef(null);
 
-  // // 👇 Scroll when messages change
-  // React.useEffect(() => {
-  //   messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  // }, [messages]);
+  // 👇 Scroll when actions change
+  React.useEffect(() => {
+    actionsEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [actions]);
 
-  // const handleSend = () => {
-  //   if (input.trim()) {
-  //     setMessages(prev => [...prev, { text: input, sender: 'user' }]);
-  //     setInput('');
-  //   }
-  // };
+  const handleNewActions = () => {
+    if (act.trim()) {
+      setActions(prev => [...prev, { acts: act }]);
+      setAct('');
+    }
+  };
+  
 
   return (
     <>  
@@ -50,29 +55,19 @@ function App() {
         <h1>GenixCraft | Dashboard</h1>
       </header>
       <main>
-        <div className="action">
-          <div className="action-header"><h1>Actions</h1></div>
-          <div className="chat-body">
-            <div className="chat-container">
-              <div className="messages">
+        <div className="act">
+          <div className="act-header"><h1>Actions</h1></div>
+          <div className="act-body">
+            <div className="act-container">
+              <div className="actions">
                 <div style={{ marginTop: 'auto' }}></div> {/* pushes messages to bottom */}
-                {messages.map((msg, index) => (
-                  <div key={index} className={`message ${msg.sender}`}>
-                    {msg.text}
+                  {actions.map((msg, index) => (
+                  <div key={index} className={`action ${msg}`}>
+                    {msg.acts}
                   </div>
                 ))}
-                <div ref={messagesEndRef} /> {/* for auto scroll */}
+                <div ref={actionsEndRef} />
               </div>
-              {/* <div className="input-area">
-                <input
-                  type="text"
-                  value={input}
-                  placeholder="Type in your commands here!"
-                  onChange={(e) => setInput(e.target.value)}
-                  onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-                />
-                <button onClick={handleSend}>Send</button>
-              </div> */}
             </div>
           </div>
         </div>

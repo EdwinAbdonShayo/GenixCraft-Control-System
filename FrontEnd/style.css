@@ -36,7 +36,7 @@ main {
   flex-direction: row;
 }
 
-.action {
+.act {
   position: relative;
   display: flex;
   justify-content: center;
@@ -53,7 +53,8 @@ main {
   margin-inline: 5%;
 }
 
-.action-header{
+.act-header{
+  margin-top: .5%;
   background: #1f1f1fd8;
   width: 44%;
   height: 8.75%;
@@ -68,6 +69,63 @@ main {
   left: 0;
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
+}
+
+.act-body{
+  filter: url('#roundedCorners');
+  padding: 0;
+  margin: 0;
+  position: relative;
+  top: 0px;
+}
+
+.act-container {
+  width: 320px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  /* padding: 50px 15px 15px 15px; */
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  height: 100%;
+  min-height: 500px;
+  overflow-y: hidden;
+  clip-path: polygon(46% 0, 100% 0, 100% 100%, 0 100%, 0 10%, 46% 10%);
+  -webkit-clip-path: polygon(46% 0, 100% 0, 100% 100%, 0 100%, 0 10%, 46% 10%);
+  scrollbar-width: none;
+}
+
+.actions {
+  height: 87%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  position: absolute;
+  bottom: 1%;
+  overflow-y: scroll;
+  width: 300px;
+  padding-left: 26px;
+  align-items: center;
+}
+
+.action {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #000000;
+  color: #ffffff;
+  padding: 10px;
+  border-radius: 15px;
+  text-align: center;
+  width: fit-content;
+}
+
+
+::-webkit-scrollbar {
+  width: 10px;
 }
 
 .chat {
@@ -88,6 +146,7 @@ main {
 }
 
 .chat-header{
+  margin-top: .5%;
   background: #1f1f1fd8;
   width: 44%;
   height: 8.75%;
