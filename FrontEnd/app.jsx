@@ -42,20 +42,20 @@ function App() {
         
       </main>
 
-
-      <svg class="flt_svg">
+      <svg width="0" height="0">
         <defs>
-          <filter id="flt_tag">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur" />
-            <feColorMatrix in="blur" mode="matrix" 
+          <filter id="roundedCorners" x="0" y="0" width="100%" height="100%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur" />
+            <feColorMatrix in="blur" type="matrix"
               values="1 0 0 0 0  
                       0 1 0 0 0  
                       0 0 1 0 0  
-                      0 0 0 19 -9" result="flt_tag" />
-            <feComposite in="SourceGraphic" in2="flt_tag" operator="atop" />
+                      0 0 0 20 -10" result="goo" />
+            <feComposite in="SourceGraphic" in2="goo" operator="atop"/>
           </filter>
         </defs>
       </svg>
+
     </>
   );
 }

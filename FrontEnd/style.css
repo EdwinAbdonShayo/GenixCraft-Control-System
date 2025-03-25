@@ -20,7 +20,7 @@ header {
 
 
 main {
-  filter: url('#flt_tag')
+  filter: url('#roundedCorners')
 }
 
 .chat-container {
@@ -38,6 +38,8 @@ main {
   height: 70vh;
   overflow-y: auto;
   clip-path: polygon(50% 0, 100% 0, 100% 100%, 0 100%, 0 10%, 50% 10%);
+  -webkit-clip-path: polygon(50% 0, 100% 0, 100% 100%, 0 100%, 0 10%, 50% 10%);
+  filter: url(#roundedCorners);
 }
   
 .messages {
