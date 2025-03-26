@@ -1,9 +1,8 @@
 function App() {
   // Step 1: Fallback messages for first load
   const [messages, setMessages] = React.useState([
-    { text: 'Ketchup box found in box A. Confirm to move it to box C', sender: 'bot' },
-    { text: 'Move the ketchup box from box A to Box C', sender: 'bot' },
-    { text: 'Yes I confirm', sender: 'user' },
+    { text: 'Hello there!', sender: 'bot' },
+    { text: 'What can I do for you?', sender: 'bot' },
   ]);
 
   const [input, setInput] = React.useState('');
@@ -33,8 +32,9 @@ function App() {
     loadMessages();
   }, []);
 
+  
   const [actions, setActions] = React.useState([
-    { acts: 'Moving Black Peppers from box A to Box C' },
+    { acts: 'The bot actions will appear here' },
     { acts: 'Moving Ketchup box to table C' },
   ]);
   
