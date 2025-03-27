@@ -6,7 +6,7 @@ import spacy
 app = Flask(__name__)
 CORS(app)
 
-nlp = spacy.load("../NLP/ner_GC_model")
+nlp = spacy.load("../NLP/GC_model2.0")
 print("✅ spaCy model loaded successfully.")
 
 # In-memory state tracking
@@ -124,3 +124,5 @@ def get_messages():
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
+
+    

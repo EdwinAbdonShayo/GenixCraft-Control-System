@@ -1,7 +1,7 @@
 import json
 
 # Load the JSON data
-with open('data.json', 'r') as file:
+with open('con-can.json', 'r') as file:
     data = json.load(file)
 
 # Iterate over each entry and extract entities
@@ -13,3 +13,6 @@ for idx, entry in enumerate(data):
         entity_value = text[start:end]
         print(f"  - {entity_type}: '{entity_value}' (Position: {start}-{end})")
     print()  # Blank line for readability
+
+
+### text block
