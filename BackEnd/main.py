@@ -2,9 +2,13 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import sqlite3
 import spacy
+from textblob import TextBlob
+from flask_socketio import SocketIO, emit
 
 app = Flask(__name__)
 CORS(app)
+socketio = SocketIO(app, cors_allowed_origins="*")
+print("✅ Flask app initialized.")
 
 nlp = spacy.load("../NLP/GC_model3.0")
 print("✅ spaCy model loaded successfully.")
@@ -49,16 +53,22 @@ def send_command():
 
     try:
         data = request.get_json()
-        user_message = data.get('message').strip().lower()
+        user_message = data.get('message').strip()
         print(f"📥 User said: {user_message}")
+
+        # Utilizing textblob for spell correction
+
+        blob = TextBlob(user_message)
+        corrected_message = str(blob.correct())
+        print(f"📝 Corrected message: {corrected_message}")
 
         conn = sqlite3.connect("commands.db")
         cursor = conn.cursor()
-        cursor.execute("INSERT INTO messages (text, sender) VALUES (?, ?)", (user_message, "user"))
+        cursor.execute("INSERT INTO messages (text, sender) VALUES (?, ?)", (corrected_message, "user"))
         conn.commit()
 
         # Run spaCy NER on every message
-        doc = nlp(user_message)
+        doc = nlp(corrected_message)
         entities = [{"text": ent.text, "label": ent.label_} for ent in doc.ents]
         print("🔍 Entities extracted:", entities)
 
@@ -68,6 +78,10 @@ def send_command():
 
             if "CONFIRMATION" in entity_labels:
                 response_text = "✅ Confirmation received. Proceeding with the action."
+
+                command_str = " ".join([e["text"] for e in waiting_for_confirmation["last_entities"]])
+                socketio.emit('robot_command', {"command": command_str})
+
                 waiting_for_confirmation = {"active": False, "last_entities": []}
 
             elif "CANCELLATION" in entity_labels:
@@ -124,4 +138,4 @@ def get_messages():
         return jsonify([]), 500
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    socketio.run(app, debug=True, port=5000)
