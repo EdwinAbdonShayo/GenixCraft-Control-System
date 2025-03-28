@@ -6,7 +6,7 @@ import spacy
 app = Flask(__name__)
 CORS(app)
 
-nlp = spacy.load("../NLP/GC_model2.0")
+nlp = spacy.load("../NLP/GC_model3.0")
 print("✅ spaCy model loaded successfully.")
 
 # In-memory state tracking
@@ -40,8 +40,8 @@ waiting_for_confirmation = {
 }
 
 # Confirmation/cancellation keywords
-confirmation_keywords = ["yes", "y", "confirm", "confirmed", "okay", "ok", "sure"]
-cancellation_keywords = ["no", "n", "cancel", "not sure", "wrong", "nope"]
+# confirmation_keywords = ["yes", "y", "confirm", "confirmed", "okay", "ok", "sure"]
+# cancellation_keywords = ["no", "n", "cancel", "not sure", "wrong", "nope"]
 
 @app.route('/send-command', methods=['POST'])
 def send_command():
@@ -57,36 +57,36 @@ def send_command():
         cursor.execute("INSERT INTO messages (text, sender) VALUES (?, ?)", (user_message, "user"))
         conn.commit()
 
+        # Run spaCy NER on every message
+        doc = nlp(user_message)
+        entities = [{"text": ent.text, "label": ent.label_} for ent in doc.ents]
+        print("🔍 Entities extracted:", entities)
+
+        # Handle confirmation or cancellation regardless of message content
         if waiting_for_confirmation["active"]:
-            if user_message in confirmation_keywords:
+            entity_labels = [e["label"] for e in entities]
+
+            if "CONFIRMATION" in entity_labels:
                 response_text = "✅ Confirmation received. Proceeding with the action."
                 waiting_for_confirmation = {"active": False, "last_entities": []}
 
-            elif user_message in cancellation_keywords:
+            elif "CANCELLATION" in entity_labels:
                 response_text = "❌ Action canceled. Please send a new command."
                 waiting_for_confirmation = {"active": False, "last_entities": []}
 
             else:
-                response_text = "❓ Awaiting confirmation. Please reply with 'yes' to proceed or 'no' to cancel."
+                response_text = "❓ Awaiting confirmation. Please reply accordingly (e.g., 'yes', 'no')."
 
         else:
-            # Run spaCy NER
-            doc = nlp(user_message)
-            entities = [{"text": ent.text, "label": ent.label_} for ent in doc.ents]
-            print("🔍 Entities extracted:", entities)
-
             if not entities:
                 response_text = "I couldn't detect any useful info. Please try rephrasing the command."
             else:
-                # Save entities for confirmation tracking
                 waiting_for_confirmation = {"active": True, "last_entities": entities}
 
-                # Generate confirmation sentence
                 object_ = next((e["text"] for e in entities if e["label"] == "OBJECT"), None)
                 dest = next((e["text"] for e in entities if e["label"] == "LOCATION"), None)
                 time_ = next((e["text"] for e in entities if e["label"] == "TIME"), None)
 
-                # Build readable confirmation
                 parts = []
                 if object_:
                     parts.append(f"move {object_}")
@@ -109,6 +109,7 @@ def send_command():
         return jsonify({"error": "Something went wrong"}), 500
 
 
+
 @app.route('/get-messages', methods=['GET'])
 def get_messages():
     try:
@@ -124,5 +125,3 @@ def get_messages():
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
-
-    

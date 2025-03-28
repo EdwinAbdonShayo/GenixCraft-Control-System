@@ -1,7 +1,7 @@
 import json
 
 # Load the JSON data
-with open('con-can.json', 'r') as file:
+with open('data2(con-can).json', 'r') as file:
     data = json.load(file)
 
 # Iterate over each entry and extract entities

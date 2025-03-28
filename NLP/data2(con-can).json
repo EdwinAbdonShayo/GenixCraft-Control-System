@@ -1,6 +1,6 @@
 [
     {
-        "text": "Yes, that is correct!",
+        "text": "yes, that is correct!",
         "entities": [[0, 3, "CONFIRMATION"]]
     },
     {
@@ -118,5 +118,13 @@
     {
         "text": "Sorry, but that's a mistake.",
         "entities": [[11, 27, "CANCELLATION"]]
+    },
+    {
+        "text": "sure, looks good.",
+        "entities": [[0, 4, "CONFIRMATION"]]
+    },
+    {
+        "text": "okay",
+        "entities": [[0, 2, "CONFIRMATION"]]
     }
 ]
