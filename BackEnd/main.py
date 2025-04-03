@@ -122,8 +122,6 @@ def send_command():
         print("❌ Error in /send-command:", e)
         return jsonify({"error": "Something went wrong"}), 500
 
-
-
 @app.route('/get-messages', methods=['GET'])
 def get_messages():
     try:
@@ -136,6 +134,39 @@ def get_messages():
     except Exception as e:
         print("❌ Error fetching messages:", e)
         return jsonify([]), 500
+
+
+@socketio.on("status_update")
+def handle_status_update(data):
+    message = data.get("message", "")
+    print(f"📬 Robot status update: {message}")
+
+    # Optionally save to DB
+    try:
+        conn = sqlite3.connect("commands.db")
+        cursor = conn.cursor()
+        cursor.execute("INSERT INTO messages (text, sender) VALUES (?, ?)", (message, "robot"))
+        conn.commit()
+        conn.close()
+    except Exception as e:
+        print("❌ Failed to save status update:", e)
+
+
+@socketio.on("error_report")
+def handle_error_report(data):
+    error = data.get("error", "")
+    print(f"🚨 Robot error reported: {error}")
+
+    # Optionally save to DB
+    try:
+        conn = sqlite3.connect("commands.db")
+        cursor = conn.cursor()
+        cursor.execute("INSERT INTO messages (text, sender) VALUES (?, ?)", (f"ERROR: {error}", "robot"))
+        conn.commit()
+        conn.close()
+    except Exception as e:
+        print("❌ Failed to save error report:", e)
+
 
 if __name__ == '__main__':
     socketio.run(app, host='0.0.0.0', port=5000, debug=True)
