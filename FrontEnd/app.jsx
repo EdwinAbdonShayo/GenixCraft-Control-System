@@ -2,7 +2,7 @@ function App() {
   // Step 1: Fallback messages for first load
   const [messages, setMessages] = React.useState([
     { text: 'Hello there!', sender: 'bot' },
-    { text: 'What can I do for you?', sender: 'bot' },
+    { text: 'What can I move for you?', sender: 'bot' },
   ]);
 
   const [input, setInput] = React.useState('');
@@ -19,9 +19,20 @@ function App() {
       const res = await fetch('http://localhost:5000/get-messages');
       const data = await res.json();
       console.log("Fetched from backend:", data); // DEBUG!
-      if (Array.isArray(data) && data.length > 0) {
-        setMessages(data);
-      }
+      const chat = [];
+      const act = [];
+  
+      data.forEach(msg => {
+        const isAction = msg.sender === 'robot' && /executing|moving|found|sending|returning|command|started|success|failure|timeout|stopped/i.test(msg.text);
+        if (isAction) {
+          act.push({ acts: msg.text });
+        } else {
+          chat.push({ text: msg.text, sender: msg.sender });
+        }
+      });
+  
+      setMessages(chat);
+      setActions(act);
     } catch (err) {
       console.error('Error loading messages:', err);
     }
@@ -35,7 +46,6 @@ function App() {
   
   const [actions, setActions] = React.useState([
     { acts: 'The bot actions will appear here' },
-    { acts: 'Moving Ketchup box to table C' },
   ]);
   
   const [act, setAct] = React.useState('');

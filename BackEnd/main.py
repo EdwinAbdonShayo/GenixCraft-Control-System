@@ -4,6 +4,9 @@ import sqlite3
 import spacy
 from textblob import TextBlob
 from flask_socketio import SocketIO, emit
+import os
+import json
+import logging
 
 app = Flask(__name__)
 CORS(app)
@@ -49,67 +52,69 @@ waiting_for_confirmation = {
 
 @app.route('/send-command', methods=['POST'])
 def send_command():
-    global waiting_for_confirmation
-
     try:
         data = request.get_json()
-        user_message = data.get('message').strip()
+        user_message = data.get('message', '').strip()
         print(f"📥 User said: {user_message}")
 
-        # Utilizing textblob for spell correction
-
+        # Spell correction
         blob = TextBlob(user_message)
         corrected_message = str(blob.correct())
         print(f"📝 Corrected message: {corrected_message}")
 
+        # Log user message
         conn = sqlite3.connect("commands.db")
         cursor = conn.cursor()
-        cursor.execute("INSERT INTO messages (text, sender) VALUES (?, ?)", (corrected_message, "user"))
+        cursor.execute("INSERT INTO messages (text, sender) VALUES (?, ?)", (user_message, "user"))
         conn.commit()
 
-        # Run spaCy NER on every message
+        # NER
         doc = nlp(corrected_message)
         entities = [{"text": ent.text, "label": ent.label_} for ent in doc.ents]
         print("🔍 Entities extracted:", entities)
 
-        # Handle confirmation or cancellation regardless of message content
-        if waiting_for_confirmation["active"]:
-            entity_labels = [e["label"] for e in entities]
-
-            if "CONFIRMATION" in entity_labels:
-                response_text = "✅ Confirmation received. Proceeding with the action."
-
-                command_str = " ".join([e["text"] for e in waiting_for_confirmation["last_entities"]])
-                socketio.emit('robot_command', {"command": command_str})
-
-                waiting_for_confirmation = {"active": False, "last_entities": []}
-
-            elif "CANCELLATION" in entity_labels:
-                response_text = "❌ Action canceled. Please send a new command."
-                waiting_for_confirmation = {"active": False, "last_entities": []}
-
-            else:
-                response_text = "❓ Awaiting confirmation. Please reply accordingly (e.g., 'yes', 'no')."
+        if not entities:
+            response_text = "I couldn't detect any useful info. Please try rephrasing the command."
 
         else:
-            if not entities:
-                response_text = "I couldn't detect any useful info. Please try rephrasing the command."
+            object_ = next((e["text"] for e in entities if e["label"] == "OBJECT"), None)
+            locations = [e["text"] for e in entities if e["label"] == "LOCATION"]
+
+            if not object_:
+                response_text = "I didn't catch what item you're referring to. Could you name it again?"
             else:
-                waiting_for_confirmation = {"active": True, "last_entities": entities}
+                # Load products.json
+                try:
+                    with open(os.path.join(os.path.dirname(__file__), "products.json"), "r") as f:
+                        products = json.load(f)
+                except Exception as e:
+                    print("❌ Failed to load products.json:", e)
+                    return jsonify({"error": "Internal product mapping error"}), 500
 
-                object_ = next((e["text"] for e in entities if e["label"] == "OBJECT"), None)
-                dest = next((e["text"] for e in entities if e["label"] == "LOCATION"), None)
-                time_ = next((e["text"] for e in entities if e["label"] == "TIME"), None)
+                search_term = object_.lower()
+                matched_product_id = None
 
-                parts = []
-                if object_:
-                    parts.append(f"move {object_}")
-                if dest:
-                    parts.append(f"to {dest}")
-                if time_:
-                    parts.append(f"at {time_}")
-                sentence = " ".join(parts)
-                response_text = f"🧠 Confirm to {sentence}"
+                for product in products:
+                    if search_term in product["product_name"].lower():
+                        matched_product_id = product["product_id"]
+                        break
+                    if any(search_term in keyword.lower() for keyword in product["keywords"]):
+                        matched_product_id = product["product_id"]
+                        break
+
+                if matched_product_id:
+                    payload_item = {"product_id": matched_product_id}
+                    if len(locations) >= 1:
+                        payload_item["location1"] = locations[0]
+                    if len(locations) >= 2:
+                        payload_item["location2"] = locations[1]
+
+                    payload = [payload_item]
+
+                    socketio.emit('robot_command', {"command": "start", "payload": payload})
+                    response_text = f"✅ Sent command to move '{object_}' from {payload_item.get('location1')} to {payload_item.get('location2', '[unspecified]')}"
+                else:
+                    response_text = f"🧠 I understood you meant '{object_}', but couldn’t match it to any known item."
 
         # Save bot response
         cursor.execute("INSERT INTO messages (text, sender) VALUES (?, ?)", (response_text, "bot"))
@@ -121,6 +126,7 @@ def send_command():
     except Exception as e:
         print("❌ Error in /send-command:", e)
         return jsonify({"error": "Something went wrong"}), 500
+
 
 @app.route('/get-messages', methods=['GET'])
 def get_messages():
