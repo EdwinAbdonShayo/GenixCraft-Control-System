@@ -1,4 +1,4 @@
-# 🌟 GenixCraft System Overview
+# GenixCraft System Overview
 This is an **intelligent robotic assistant system** that allows a user to control a robot arm just by **typing natural language commands** through a web-based chat interface. Here's how it all fits together:
 
 ## 🧠 1. NLP (Natural Language Processing)
